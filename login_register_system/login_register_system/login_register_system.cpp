@@ -1,6 +1,7 @@
 #include <iostream> // Handles console output and input
 #include <fstream> // The fstream library offers classes for file I/O operations.
 #include <string> // Includes the string class allowing string manipulation.
+#include <typeinfo>
 
 bool loggingIn() {
 	std::string username, password, user, pass;
@@ -23,11 +24,18 @@ bool loggingIn() {
 int main() {
 	int log_or_reg; // Saves a value of 1 or 2 whether you want to log in 
 	// or register and saves it to this variable
+	std::cout << "Do you want to log in or register?" << std::endl;
 	while (true) {
-		std::cout << "Do you want to log in or register? \nPress [1] to log in or Press [2] to register: ";
-		std::cin >> log_or_reg;
-		if (log_or_reg == 1 or log_or_reg == 2) {
-			break;
+		std::cout << "Press [1] to log in or Press [2] to register: ";
+
+		if (std::cin >> log_or_reg) {
+			if (log_or_reg == 1 or log_or_reg == 2) {
+				break;
+			}
+		}
+		else {
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 		}
 		std::cout << "Enter correct number!" << std::endl;
 	}
@@ -35,8 +43,7 @@ int main() {
 		bool status = loggingIn();
 		if (!status) {
 			std::cout << "Incorrect credentials. Try again!" << std::endl;
-			system("pause"); // Causes the program to pause
-			return 0;
+			main();
 		}
 		else {
 			std::cout << "Successfully logged in!" << std::endl;
